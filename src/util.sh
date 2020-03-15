@@ -1445,6 +1445,7 @@ fi
 ##
 _ble_util_assign_base=$_ble_base_run/$$.ble_util_assign.tmp
 _ble_util_assign_level=0
+#%if target != "osh"
 if ((_ble_bash>=40000)); then
   # mapfile の方が read より高速
   function ble/util/assign {
@@ -1457,6 +1458,7 @@ if ((_ble_bash>=40000)); then
     return "$_ble_local_ret"
   }
 else
+#%end
   function ble/util/assign {
     local _ble_local_tmp=$_ble_util_assign_base.$((_ble_util_assign_level++))
     builtin eval -- "$2" >| "$_ble_local_tmp"
@@ -1466,7 +1468,9 @@ else
     builtin eval "$1=\${$1%$'\n'}"
     return "$_ble_local_ret"
   }
+#%if target != "osh"
 fi
+#%end
 ## 関数 ble/util/assign-array arr command args...
 ##   mapfile -t arr < <(command ...) の高速な代替です。
 ##   command はサブシェルではなく現在のシェルで実行されます。
@@ -1478,6 +1482,7 @@ fi
 ##   @param[in] args...
 ##     command から参照する引数 ($3 $4 ...) を指定します。
 ##
+#%if target != "osh"
 if ((_ble_bash>=40000)); then
   function ble/util/assign-array {
     local _ble_local_tmp=$_ble_util_assign_base.$((_ble_util_assign_level++))
@@ -1488,6 +1493,7 @@ if ((_ble_bash>=40000)); then
     return "$_ble_local_ret"
   }
 else
+#%end
   function ble/util/assign-array {
     local _ble_local_tmp=$_ble_util_assign_base.$((_ble_util_assign_level++))
     builtin eval -- "$2" >| "$_ble_local_tmp"
@@ -1496,7 +1502,9 @@ else
     ble/util/mapfile "$1" < "$_ble_local_tmp"
     return "$_ble_local_ret"
   }
+#%if target != "osh"
 fi
+#%end
 
 #
 # functions
@@ -1800,7 +1808,7 @@ if ((_ble_bash>=40100)); then
     return "$_ble_local_ret"
   }
 else
-  _ble_util_openat_nextfd=$bleopt_openat_base
+  _ble_util_openat_nextfd=${bleopt_openat_base:-30}
   function ble/fd#alloc/.nextfd {
     # Note: Bash 3.1 では exec fd>&- で明示的に閉じても駄目。
     #   開いた後に読み取りプロセスで読み取りに失敗する。
