@@ -624,7 +624,7 @@ function ble/string#split-words {
 ##   @param[in]  text 分割する文字列を指定します。
 ##   @var[out] ret
 ##
-if ((_ble_bash>=40000)); then
+if ((_ble_bash>=40000&&!_ble_bash_oil)); then
   function ble/string#split-lines {
     mapfile -t "$1" <<< "${*:2}"
   }
