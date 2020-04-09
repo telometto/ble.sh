@@ -1411,6 +1411,19 @@ function ble/builtin/trap/setup-hook {
 ##   @param[in] filename
 ##     読み取るファイルの場所を指定します。
 ##
+#%if target == "osh"
+function ble/util/readfile {
+  builtin eval "$1=\$(cat \"\$2\"; echo -n _)"
+  builtin eval "$1=\${$1%_}"
+}
+function ble/util/mapfile {
+  local IFS= _ble_local_i=0 _ble_local_val _ble_local_arr; _ble_local_arr=()
+  while builtin read -r _ble_local_val || [[ $_ble_local_val ]]; do
+    _ble_local_arr[_ble_local_i++]=$_ble_local_val
+  done
+  builtin eval "$1=(\"\${_ble_local_arr[@]}\")"
+}
+#%else
 if ((_ble_bash>=40000)); then
   function ble/util/readfile { # 155ms for man bash
     local __buffer
@@ -1433,6 +1446,7 @@ else
     builtin eval "$1=(\"\${_ble_local_arr[@]}\")"
   }
 fi
+#%end
 
 ## 関数 ble/util/assign var command
 ##   var=$(command) の高速な代替です。
