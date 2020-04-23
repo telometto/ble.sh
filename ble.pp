@@ -8,6 +8,7 @@
 shopt -s parse_dynamic_arith
 shopt -s eval_unsafe_arith
 shopt -s compat_array
+HISTFILE=$HOME/.osh_history
 #%else
 #%%$> out/ble.sh
 #%end
