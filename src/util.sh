@@ -2128,6 +2128,10 @@ function ble/util/msleep/calibrate {
     ble/util/idle.continue
 }
 
+#%if target == "osh"
+# OSH_TODO: Temporary implementation
+function ble/util/msleep/.core { ble/bin/sleep "$1"; }
+#%else
 if ((_ble_bash>=40400)) && ble/util/msleep/.check-builtin-sleep; then
   _ble_util_msleep_builtin_available=1
   _ble_util_msleep_delay=300
@@ -2290,6 +2294,7 @@ elif ble/bin/.freeze-utility-path usleep; then
 elif ble/util/msleep/.check-sleep-decimal-support; then
   function ble/util/msleep/.core { ble/bin/sleep "$1"; }
 fi
+#%end
 
 function ble/util/sleep {
   local msec=$((${1%%.*}*1000))
