@@ -70,7 +70,7 @@ magic-space                       magic-space
 menu-complete                     menu-complete
 menu-complete-backward            menu-complete backward
 next-history                      history-next
-next-screen-line                  forward-graphical-line
+next-screen-line                  @nomarked forward-graphical-line
 non-incremental-forward-search-history        history-nsearch-forward
 non-incremental-forward-search-history-again  history-nsearch-forward-again
 non-incremental-reverse-search-history        history-nsearch-backward
