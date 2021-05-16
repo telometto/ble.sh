@@ -1078,6 +1078,10 @@ else
     ret="${ret[*]/#/$q}"
   }
   function ble/string#quote-command {
+    if (($#<=1)); then
+      ret=$1
+      return
+    fi
     local q=\' Q="'\''" IFS=$_ble_term_IFS
     ret=("${@:2}")
     ret=("${ret[@]//$q/$Q}")
@@ -2130,10 +2134,11 @@ function ble/util/writearray {
 #%    # #D1325 更に Bash-3.0 では "x${_ble_term_DEL}y" とすると
 #%    #   _ble_term_DEL の中身が消えてしまうので
 #%    #   "x""${_ble_term_DEL}""y" とする必要がある。
-      if (_ble_bash < 40000) {
-        gsub(/\001\001\001\001/, "\001", decl);
-        gsub(/\001\001\001\177/, "\177", decl);
-      } else if (_ble_bash < 40400) {
+      # if (_ble_bash < 40000) {
+      #   gsub(/\001\001\001\001/, "\001", decl);
+      #   gsub(/\001\001\001\177/, "\177", decl);
+      # } else
+      if (_ble_bash < 40400) {
         gsub(/\001\001/, "\001", decl);
         gsub(/\001\177/, "\177", decl);
       }
